@@ -1,0 +1,8 @@
+---
+
+- hosts: dbservers
+  roles:
+    - role: ansible-role-postgresql
+      become: true
+      become_user: root
+
