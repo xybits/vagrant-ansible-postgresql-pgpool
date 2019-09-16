@@ -1,0 +1,12 @@
+
+# OS-specific
+.DS_Store
+
+# Vagrant stuff
+.vagrant/
+
+# IDE junk
+.idea/
+*.iml
+.project
+
