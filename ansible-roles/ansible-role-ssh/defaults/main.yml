@@ -1,0 +1,10 @@
+---
+
+# - Packages -
+ssh_packages:
+  - openssh-clients
+  - openssh-server
+
+# - Configuration -
+ssh_accounts: []
+

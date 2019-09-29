@@ -1,8 +1,9 @@
 ---
 
 - hosts: dbservers
+  become: true
   roles:
     - role: ansible-role-postgresql
-      become: true
-      become_user: root
+    - role: ansible-role-ssh
+    - role: ansible-role-pgpool
 

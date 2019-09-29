@@ -1,0 +1,8 @@
+---
+
+- name: install > SSH packages
+  yum:
+    name: "{{ ssh_packages }}"
+    state: present
+    update_cache: true
+

@@ -1,0 +1,9 @@
+---
+
+- name: config > Keys setup
+  include_tasks: keys.yml
+  with_items: "{{ ssh_accounts | default( [] ) }}"
+  loop_control:
+    loop_var: ssh_account
+
+

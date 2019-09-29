@@ -1,0 +1,104 @@
+---
+
+- name: keys > Keys user
+  set_fact:
+    ssh_user: "{{ ssh_account.user | default( '' ) }}"
+  changed_when: false
+  no_log: true
+
+- name: keys > Update keys user
+  block:
+  - name: keys > Current user
+    command: whoami
+    become: true
+    register: cmd_whoami
+    changed_when: false
+
+  - name: keys > Update user
+    set_fact:
+      ssh_user: "{{ cmd_whoami.stdout }}"
+    changed_when: false
+    no_log: true
+  when: ssh_user | length == 0
+
+- name: keys > Keys user group
+  set_fact:
+    ssh_user_group: "{{ ssh_account.group | default( '' ) }}"
+  changed_when: false
+  no_log: true
+
+- name: keys > Update keys user group
+  block:
+  - name: keys > Current user group
+    command: "id -g -n {{ ssh_user }}"
+    register: cmd_id_group
+    changed_when: false
+
+  - name: keys > Update user group
+    set_fact:
+      ssh_user_group: "{{ cmd_id_group.stdout }}"
+    changed_when: false
+    no_log: true
+  when: ssh_user_group | length == 0
+
+- name: keys > Keys directory
+  file:
+    path: "~{{ ssh_user }}/.ssh"
+    state: directory
+    group: "{{ ssh_user_group | default(omit) }}"
+    owner: "{{ ssh_user }}"
+    mode: 0700
+
+- name: keys > Client configuration
+  template:
+    src: config.j2
+    dest: "~{{ ssh_user }}/.ssh/config"
+    force: yes
+    group: "{{ ssh_user_group | default(omit) }}"
+    owner: "{{ ssh_user }}"
+    mode: 0600
+
+- name: keys > Authorized keys
+  lineinfile:
+    dest: "~{{ ssh_user }}/.ssh/authorized_keys"
+    line: "{{ ssh_auth_key }}"
+    create: true
+    group: "{{ ssh_user_group | default(omit) }}"
+    owner: "{{ ssh_user }}"
+    mode: 0644
+  with_items: "{{ ssh_account.authorized_keys | default( [] ) }}"
+  loop_control:
+    loop_var: ssh_auth_key
+
+- name: keys > Keys private
+  copy:
+    content: "{{ ssh_key.private }}"
+    dest: "~{{ ssh_user }}/.ssh/{{ ssh_key.name | default( 'id_rsa' ) }}"
+    group: "{{ ssh_user_group | default(omit) }}"
+    owner: "{{ ssh_user }}"
+    mode: 0600
+  when: ssh_key.private is defined
+  with_items: "{{ ssh_account.ssh_keys | default( [] ) }}"
+  loop_control:
+    loop_var: ssh_key
+
+- name: keys > Keys public
+  copy:
+    content: "{{ ssh_key.public }}"
+    dest: "~{{ ssh_user }}/.ssh/{{ ssh_key.name | default( 'id_rsa' ) }}.pub"
+    group: "{{ ssh_user_group | default(omit) }}"
+    owner: "{{ ssh_user }}"
+    mode: 0600
+  when: ssh_key.public is defined
+  with_items: "{{ ssh_account.ssh_keys | default( [] ) }}"
+  loop_control:
+    loop_var: ssh_key
+
+- name: keys > Keys generate
+  shell: yes | su {{ ssh_user }} -c "ssh-keygen -q -b 2048 -t rsa -N '' -C '' -f ~{{ ssh_user }}/.ssh/{{ ssh_key.name | default( 'id_rsa' ) }}"
+  args:
+    creates: "~{{ ssh_user }}/.ssh/{{ ssh_key.name | default( 'id_rsa' ) }}"
+  with_items: "{{ ssh_account.ssh_keys | default( [] ) | selectattr( 'private', 'undefined' ) | list }}"
+  loop_control:
+    loop_var: ssh_key
+

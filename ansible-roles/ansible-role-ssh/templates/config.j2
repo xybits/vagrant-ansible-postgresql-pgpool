@@ -1,0 +1,15 @@
+
+Host    *
+  IdentityFile   ~/.ssh/id_rsa
+  User           {{ ssh_user }}
+  LogLevel       ERROR
+  StrictHostKeyChecking  no
+  UserKnownHostsFile     /dev/null
+
+{% for client in (ssh_account.clients | default( [] )) %}
+Host    {{ client.alias | default( client.host ) | list | join( ' ' ) }}
+  HostName      {{ client.host }}
+  User          {{ client.user | default( ssh_user ) }}
+  IdentityFile  ~/.ssh/{{ client.id_file | default( 'id_rsa' ) }}
+{% endfor %}
+

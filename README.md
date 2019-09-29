@@ -1,8 +1,12 @@
 
-# vagrant-ansible-postgresql
+# vagrant-ansible-postgresql-pgpool
 
-Example of PostgreSQL replication with two servers: master and standby
+Example of [PostgreSQL](https://www.postgresql.org/docs/11/high-availability.html) cluster
+with [PGPool-II](https://www.pgpool.net/docs/41/en/html/example-cluster.html)
 
+## Limitation
+This example assumes you are familiar with the PostgreSQL replication and PGPool-II high availability concepts.
+This example uses two PostgreSQL servers: one master and one standby.
 
 ## Prerequisites:
 
@@ -22,21 +26,9 @@ Download and install the following tools:
    ```bash
    -:$ vagrant up postgresql01 postgresql02
    ```
-- Connect to the master server
+
+- Connect to the master server via PGPool-II port
    ```bash
-   -:$ vagrant ssh postgresql01 -- -t "sudo -i -u postgres psql"
-   postgres=# \l                         # DATABASES LISTED           (1)
-   postgres=# create database test;      # 'test' DATABASE CREATED    (4)
-   postgres=# \l                         # DATABASES LISTED           (6)
-   postgres=# drop database test;        # 'test' DATABASE DROPPED    (7)
-   postgres=# \l                         # DATABASES LISTED           (9)
-   ```
-- Connect to the standby server
-   ```bash
-   -:$ vagrant ssh postgresql02 -- -t "sudo -i -u postgres psql"
-   postgres=# \l                         # DATABASES LISTED           (2)
-   postgres=# create database test;      # ERROR: READONLY TRANSACION (3)
-   postgres=# \l                         # DATABASES LISTED           (5)
-   postgres=# \l                         # DATABASES LISTED           (8)
+   -:$ vagrant ssh postgresql01 -- -t "sudo -i -u postgres psql -p 9999"
    ```
 

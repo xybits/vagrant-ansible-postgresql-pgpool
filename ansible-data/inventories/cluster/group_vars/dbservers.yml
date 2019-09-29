@@ -1,6 +1,6 @@
 ---
 
-# PostgreSQL Replication
+# - PostgreSQL Replication -
 postgres_password: postgres
 postgres_replication_user: replicator
 postgres_replication_password: replication
@@ -26,11 +26,30 @@ postgresql_hba_config:
   - host    replication     {{ postgres_replication_user }}               10.233.89.43/32         md5
   - host    replication     {{ postgres_replication_user }}               10.233.89.47/32         md5
 
-# PostgreSQL Data
+# - PostgreSQL Data -
 postgresql_users:
   - name: postgres
     password: "{{ postgres_password }}"
   - name: "{{ postgres_replication_user }}"
     password: "{{ postgres_replication_password }}"
-    attributes: ['LOGIN', 'REPLICATION']
+    attributes: [ 'LOGIN', 'REPLICATION' ]
+
+# - PGPool-II Configuration -
+pgpool2_health_check_timeout: 5
+pgpool2_health_check_period: 3
+pgpool2_health_check_max_retries: 2
+pgpool2_search_primary_node_timeout: 5
+pgpool2_wd_interval: 3
+
+pgpool2_hba_config:
+  - host    all             all             10.233.89.43/32         md5
+  - host    all             all             10.233.89.47/32         md5
+  - host    all             all             10.233.89.211/32        md5
+
+# - PGPool-II Log Configuration -
+pgpool2_syslog_facility: LOCAL1
+
+# - PGPool-II WatchDog Configuration -
+pgpool2_delegate_IP: "10.233.89.211"
+pgpool2_heartbeat_device: eth1
 
