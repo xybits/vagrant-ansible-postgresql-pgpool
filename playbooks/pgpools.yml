@@ -1,7 +1,0 @@
----
-
-- hosts: pgpools
-  become: true
-  roles:
-    - role: ansible-role-pgpool
-    - role: ansible-role-ssh

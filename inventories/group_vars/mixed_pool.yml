@@ -1,0 +1,17 @@
+---
+
+# - PostgreSQL Host Based Authentication -
+postgresql_hba_config:
+  - local   all             postgres                                         peer
+  - host    all             all                      10.233.89.3/32          md5
+  - host    all             all                      10.233.89.5/32          md5
+  - host    all             all                      10.233.89.209/32        md5
+  - host    replication     {{ postgres_replication_user }}               10.233.89.3/32          md5
+  - host    replication     {{ postgres_replication_user }}               10.233.89.5/32          md5
+
+# - PGPool-II Delegate IP -
+pgpool2_delegate_IP: "10.233.89.209"
+# - PGPool-II Host Based Authentication -
+pgpool2_hba_config:
+  - host    all             all             0.0.0.0/0               md5
+  - host    all             all             10.233.89.209/32        md5

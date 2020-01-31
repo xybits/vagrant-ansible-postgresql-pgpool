@@ -30,6 +30,9 @@ Execute following command to install required roles for the provided ansible pla
   ```bash
   -:$ vagrant status
   ```
+
+### Creating PostgreSQL and PGPool-II servers in separate hosts
+
 - Instantiate PostgreSQL servers:
    ```bash
    -:$ vagrant up --provision postgres01 postgres02
@@ -40,7 +43,7 @@ Execute following command to install required roles for the provided ansible pla
    -:$ vagrant up --provision pgpool01 pgpool02
    ```
 
-- Connect to the master server via PGPool-II servers' port:
+- Connect to PostgreSQL servers via PGPool-II or directly:
    ```bash
   # Password for "postgres" user is in ./inventories/group_vars/databases.yml file
 
@@ -53,5 +56,23 @@ Execute following command to install required roles for the provided ansible pla
    -:$ vagrant ssh pgpool02 -- -t "psql -U postgres -p 9999 -h 10.233.89.43"  (1) pgpool01
    -:$ vagrant ssh pgpool02 -- -t "psql -U postgres -p 9999 -h 10.233.89.47"  (2) pgpool02
    -:$ vagrant ssh pgpool02 -- -t "psql -U postgres -p 9999 -h 10.233.89.211" (3) delegate_ip
+
+  # OR
+
+   -:$ vagrant ssh postgres01 -- -t "sudo -i -u psql"  (1) postgresql01
+   -:$ vagrant ssh postgres02 -- -t "sudo -i -u psql"  (2) postgresql02
    ```
 
+### Creating PostgreSQL and PGPool-II servers in same hosts
+
+- Instantiate servers:
+   ```bash
+   -:$ vagrant up --provision postgrespool01 postgrespool02
+   ```
+
+- Connect via PGPool-II servers' port:
+   ```bash
+   -:$ vagrant ssh postgrespool01 -- -t "psql -U postgres -p 9999 -h 10.233.89.3"   (1) pgpool in postgrespool01
+   -:$ vagrant ssh postgrespool01 -- -t "psql -U postgres -p 9999 -h 10.233.89.5"   (2) pgpool in postgrespool02
+   -:$ vagrant ssh postgrespool01 -- -t "psql -U postgres -p 9999 -h 10.233.89.209" (3) pgpool via delegate_ip
+   ```

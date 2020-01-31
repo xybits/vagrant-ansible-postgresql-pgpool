@@ -1,4 +1,16 @@
 ---
 
-- import_playbook: postgresqls.yml
-- import_playbook: pgpools.yml
+- hosts: postgresqls
+  become: true
+  roles:
+    - role: ansible-role-postgresql
+
+- hosts: pgpools
+  become: true
+  roles:
+    - role: ansible-role-pgpool
+
+- hosts: [postgresqls, pgpools]
+  become: true
+  roles:
+    - role: ansible-role-ssh

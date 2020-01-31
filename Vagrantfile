@@ -17,6 +17,16 @@ BOXES = {
 }
 
 INSTANCES  = {
+  :postgrespool01 => {
+    :private_ip => '10.233.89.3',
+    :inventory  => 'inventories/hosts.yml',
+    :playbook   => 'playbooks/servers.yml',
+  },
+  :postgrespool02 => {
+    :private_ip => '10.233.89.5',
+    :inventory  => 'inventories/hosts.yml',
+    :playbook   => 'playbooks/servers.yml',
+  },
   :postgres01 => {
     :private_ip => '10.233.89.11',
     :inventory  => 'inventories/hosts.yml',
