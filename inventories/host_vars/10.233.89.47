@@ -1,0 +1,18 @@
+---
+
+# - SSH Configuration -
+ssh_accounts:
+  - user:   "{{ pgpool2_user }}"
+    ssh_keys:
+      - name:    id_rsa
+        private:  "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_47') }}"
+        public:   "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_47.pub') }}"
+
+# - PGPool-II backend hosts -
+pgpool2_backend_hosts: [ "10.233.89.11", "10.233.89.19" ]
+
+# - PGPool-II WatchDog Configuration -
+pgpool2_wd_hostname: "10.233.89.47"
+pgpool2_heartbeat_destinations: [ "10.233.89.43" ]
+pgpool2_other_pgpool_hostnames: [ "10.233.89.43" ]
+

@@ -1,0 +1,7 @@
+---
+
+- hosts: postgresqls
+  become: true
+  roles:
+    - role: ansible-role-postgresql
+    - role: ansible-role-ssh

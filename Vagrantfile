@@ -17,17 +17,27 @@ BOXES = {
 }
 
 INSTANCES  = {
-  :postgresql01 => {
-    :private_ip => '10.233.89.43',
-    :roles_path => 'ansible-roles/',
-    :inventory  => 'ansible-data/inventories/cluster/hosts.yml',
-    :playbook   => 'ansible-data/playbooks/cluster/databases.yml',
+  :postgres01 => {
+    :private_ip => '10.233.89.11',
+    :inventory  => 'inventories/hosts.yml',
+    :playbook   => 'playbooks/servers.yml',
   },
-  :postgresql02 => {
+  :postgres02 => {
+    :private_ip => '10.233.89.19',
+    :inventory  => 'inventories/hosts.yml',
+    :playbook   => 'playbooks/servers.yml',
+  },
+  :pgpool01 => {
+    :memory     => 512,
+    :private_ip => '10.233.89.43',
+    :inventory  => 'inventories/hosts.yml',
+    :playbook   => 'playbooks/servers.yml',
+  },
+  :pgpool02 => {
+    :memory     => 512,
     :private_ip => '10.233.89.47',
-    :roles_path => 'ansible-roles/',
-    :inventory  => 'ansible-data/inventories/cluster/hosts.yml',
-    :playbook   => 'ansible-data/playbooks/cluster/databases.yml',
+    :inventory  => 'inventories/hosts.yml',
+    :playbook   => 'playbooks/servers.yml',
   },
 }
 
@@ -65,7 +75,6 @@ Vagrant.configure("2") do |config|
         ans.limit    = machine[:private_ip]
         ans.playbook = machine[:playbook]
         ans.inventory_path    = machine[:inventory]
-        ans.galaxy_roles_path = machine[:roles_path]
       end
     end
   end

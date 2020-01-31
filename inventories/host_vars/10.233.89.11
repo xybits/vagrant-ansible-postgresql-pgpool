@@ -1,0 +1,12 @@
+---
+
+# - PostgreSQL Replication -
+#postgres_replication_standby_mode: false
+#postgres_replication_host: "10.233.89.19"
+
+# - SSH Configuration -
+ssh_accounts:
+  - user:   postgres
+    authorized_keys:
+      - "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_43.pub') }}"
+      - "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_47.pub') }}"

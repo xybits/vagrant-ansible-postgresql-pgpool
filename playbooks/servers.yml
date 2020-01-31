@@ -1,0 +1,4 @@
+---
+
+- import_playbook: postgresqls.yml
+- import_playbook: pgpools.yml
