@@ -22,3 +22,19 @@ ssh_accounts:
   - user:   postgres
     authorized_keys:
       - "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_3.pub') }}"
+
+# - Firewall Access -
+allow_ports:
+  - port: 5432
+    source: "10.233.89.3/32"
+  - port: 5432
+    source: "10.233.89.209/32"
+  - port: 9999
+    source: "0.0.0.0/0"
+  - port: 9898
+    source: "10.233.89.3/32"
+  - port: 9000
+    source: "10.233.89.3/32"
+  - port: 9694
+    proto: udp
+    source: "10.233.89.3/32"

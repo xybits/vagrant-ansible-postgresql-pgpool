@@ -10,3 +10,17 @@ ssh_accounts:
     authorized_keys:
       - "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_43.pub') }}"
       - "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_47.pub') }}"
+      - "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_49.pub') }}"
+
+# - Firewall Access -
+allow_ports:
+  - port: 5432
+    source: "10.233.89.19/32"
+  - port: 5432
+    source: "10.233.89.43/32"
+  - port: 5432
+    source: "10.233.89.47/32"
+  - port: 5432
+    source: "10.233.89.49/32"
+  - port: 5432
+    source: "10.233.89.211/32"

@@ -1,12 +1,16 @@
 ---
 
 - src: https://github.com/xybits/ansible-role-pgpool.git
-  version: v0.0.1
+  version: v0.0.2
   name: ansible-role-pgpool
 
 - src: https://github.com/xybits/ansible-role-postgresql.git
-  version: v0.0.1
+  version: v0.0.2
   name: ansible-role-postgresql
+
+- src: https://github.com/xybits/ansible-role-firewall.git
+  version: v0.0.1
+  name: ansible-role-firewall
 
 - src: https://github.com/xybits/ansible-role-ssh.git
   version: v0.0.1

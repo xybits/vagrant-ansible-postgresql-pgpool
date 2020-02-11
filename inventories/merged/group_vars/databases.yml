@@ -7,8 +7,8 @@ postgres_data_dir: /var/lib/pgsql/11/data
 
 # - PostgreSQL Replication -
 postgres_replication_user: replicator
-postgres_replication_password: replication
-postgres_replication_slot: replica_stream_pg
+postgres_replication_password: replication+merged
+postgres_replication_slot: replica_merged
 
 # - PostgreSQL Configuration -
 postgresql_config:
@@ -32,7 +32,13 @@ postgresql_users:
     attributes: [ 'LOGIN', 'REPLICATION' ]
 
 # - PostgreSQL Host Based Authentication -
-#postgresql_hba_config: []
+postgresql_hba_config:
+  - local   all             postgres                                         peer
+  - host    all             all                      10.233.89.3/32          md5
+  - host    all             all                      10.233.89.5/32          md5
+  - host    all             all                      10.233.89.209/32        md5
+  - host    replication     {{ postgres_replication_user }}               10.233.89.3/32          md5
+  - host    replication     {{ postgres_replication_user }}               10.233.89.5/32          md5
 
 # - PGPool-II Configuration -
 pgpool2_user: pgpool
@@ -48,8 +54,13 @@ pgpool2_wd_interval: 3
 pgpool2_syslog_facility: LOCAL1
 
 # - PGPool-II WatchDog Configuration -
-#pgpool2_delegate_IP: "x.x.x.x"
+pgpool2_delegate_IP: "10.233.89.209"
 pgpool2_heartbeat_device: eth1
 
 # - PGPool-II Host Based Authentication -
-#pgpool2_hba_config: []
+pgpool2_hba_config:
+  - host    all             all             0.0.0.0/0               md5
+  - host    all             all             10.233.89.209/32        md5
+
+# - Firewall Access -
+firewalld_zone: vappmp

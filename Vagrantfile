@@ -19,34 +19,40 @@ BOXES = {
 INSTANCES  = {
   :postgrespool01 => {
     :private_ip => '10.233.89.3',
-    :inventory  => 'inventories/hosts.yml',
+    :inventory  => 'inventories/merged/hosts.yml',
     :playbook   => 'playbooks/servers.yml',
   },
   :postgrespool02 => {
     :private_ip => '10.233.89.5',
-    :inventory  => 'inventories/hosts.yml',
+    :inventory  => 'inventories/merged/hosts.yml',
     :playbook   => 'playbooks/servers.yml',
   },
   :postgres01 => {
     :private_ip => '10.233.89.11',
-    :inventory  => 'inventories/hosts.yml',
+    :inventory  => 'inventories/distributed/hosts.yml',
     :playbook   => 'playbooks/servers.yml',
   },
   :postgres02 => {
     :private_ip => '10.233.89.19',
-    :inventory  => 'inventories/hosts.yml',
+    :inventory  => 'inventories/distributed/hosts.yml',
     :playbook   => 'playbooks/servers.yml',
   },
   :pgpool01 => {
     :memory     => 512,
     :private_ip => '10.233.89.43',
-    :inventory  => 'inventories/hosts.yml',
+    :inventory  => 'inventories/distributed/hosts.yml',
     :playbook   => 'playbooks/servers.yml',
   },
   :pgpool02 => {
     :memory     => 512,
     :private_ip => '10.233.89.47',
-    :inventory  => 'inventories/hosts.yml',
+    :inventory  => 'inventories/distributed/hosts.yml',
+    :playbook   => 'playbooks/servers.yml',
+  },
+  :pgpool03 => {
+    :memory     => 512,
+    :private_ip => '10.233.89.49',
+    :inventory  => 'inventories/distributed/hosts.yml',
     :playbook   => 'playbooks/servers.yml',
   },
 }
@@ -81,7 +87,7 @@ Vagrant.configure("2") do |config|
 
       # Provision
       node.vm.provision "ansible" do |ans|
-        ans.verbose  = "v"
+        ans.verbose  = "vv"
         ans.limit    = machine[:private_ip]
         ans.playbook = machine[:playbook]
         ans.inventory_path    = machine[:inventory]

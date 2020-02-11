@@ -13,4 +13,5 @@
 - hosts: [postgresqls, pgpools]
   become: true
   roles:
+    - role: ansible-role-firewall
     - role: ansible-role-ssh
