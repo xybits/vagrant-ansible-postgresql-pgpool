@@ -24,17 +24,12 @@ ssh_accounts:
       - "{{ lookup('file', inventory_dir ~ '/ssh_keys/id_rsa_5.pub') }}"
 
 # - Firewall Access -
-allow_ports:
-  - port: 5432
+allow_services:
+  - service: postgresql
     source: "10.233.89.5/32"
-  - port: 5432
+  - service: postgresql
     source: "10.233.89.209/32"
-  - port: 9999
+  - service: pgpool-client
     source: "0.0.0.0/0"
-  - port: 9898
-    source: "10.233.89.5/32"
-  - port: 9000
-    source: "10.233.89.5/32"
-  - port: 9694
-    proto: udp
+  - service: pgpool-cluster
     source: "10.233.89.5/32"

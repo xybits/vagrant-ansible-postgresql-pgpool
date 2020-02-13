@@ -17,20 +17,25 @@ pgpool2_heartbeat_destinations: [ "10.233.89.43", "10.233.89.49" ]
 pgpool2_other_pgpool_hostnames: [ "10.233.89.43", "10.233.89.49" ]
 
 # - Firewall Access -
-allow_ports:
-  - port: 9999
+firewalld_services:
+  - name: pgpool-client
+    short: PGPool-II Client
+    description: PGPool-II Middleware Between PostgreSQL Servers And PostgreSQL Database Clients
+    ports:
+      - port: 9999
+  - name: pgpool-cluster
+    short: PGPool-II Cluster
+    description: PGPool-II Middleware Between PostgreSQL Servers And PostgreSQL Database Clients
+    ports:
+      - port: 9000
+      - port: 9898
+      - port: 9694
+        protocol: udp
+
+allow_services:
+  - service: pgpool-client
     source: "0.0.0.0/0"
-  - port: 9898
+  - service: pgpool-cluster
     source: "10.233.89.43/32"
-  - port: 9898
-    source: "10.233.89.49/32"
-  - port: 9000
-    source: "10.233.89.43/32"
-  - port: 9000
-    source: "10.233.89.49/32"
-  - port: 9694
-    proto: udp
-    source: "10.233.89.43/32"
-  - port: 9694
-    proto: udp
+  - service: pgpool-cluster
     source: "10.233.89.49/32"

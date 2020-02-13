@@ -64,3 +64,25 @@ pgpool2_hba_config:
 
 # - Firewall Access -
 firewalld_zone: vappmp
+
+firewalld_services:
+  - name: postgresql
+    short: PostgreSQL Server
+    description: >-
+      PostgreSQL is an open source object-relational database system,
+      developed as part of the POSTGRES project at the University of California at Berkeley.
+    ports:
+      - port: 5432
+  - name: pgpool-client
+    short: PGPool-II Client
+    description: PGPool-II Middleware Between PostgreSQL Servers And PostgreSQL Database Clients
+    ports:
+      - port: 9999
+  - name: pgpool-cluster
+    short: PGPool-II Cluster
+    description: PGPool-II Middleware Between PostgreSQL Servers And PostgreSQL Database Clients
+    ports:
+      - port: 9000
+      - port: 9898
+      - port: 9694
+        protocol: udp
